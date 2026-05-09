@@ -100,12 +100,12 @@
   const GROUND_Y = 240;          // 地面高度
   const DINO_X = 80;            // 恐龙固定X位置
   const GOAL_SCORE = 1000;      // 胜利分数
-  const WIN_SPEED = 14;         // 胜利时速度
+  const WIN_SPEED = 7;          // 胜利时速度
 
   // ========== 游戏状态 ==========
   let gameState = 'waiting';    // waiting | playing | win | over
   let score = 0;
-  let speed = 6;               // 当前滚动速度
+  let speed = 3;               // 当前滚动速度
   let frameCount = 0;
 
   // ========== 恐龙 ==========
@@ -478,7 +478,7 @@
 
   function resetGame() {
     score = 0;
-    speed = 6;
+    speed = 3;
     obstacles = [];
     particles = [];
     dino.y = GROUND_Y - DINO_NORMAL_H;
@@ -527,7 +527,7 @@
       groundOffset += speed;
 
       // 速度递增
-      speed = 6 + (score / GOAL_SCORE) * WIN_SPEED;
+      speed = 3 + (score / GOAL_SCORE) * WIN_SPEED;
 
       // 检查是否胜利
       if (score >= GOAL_SCORE) {
