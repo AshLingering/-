@@ -112,10 +112,10 @@
   const GRAVITY = 0.5;
   const JUMP_FORCE = -15;
   const DINO_SCALE = 1.5;
-  const DINO_NORMAL_H = 46 * DINO_SCALE;
-  const DINO_DUCK_H = 28 * DINO_SCALE;
-  const DINO_NORMAL_W = 44 * DINO_SCALE;
-  const DINO_DUCK_W = 54 * DINO_SCALE;
+  const DINO_NORMAL_H = 56 * DINO_SCALE;
+  const DINO_DUCK_H = 34 * DINO_SCALE;
+  const DINO_NORMAL_W = 50 * DINO_SCALE;
+  const DINO_DUCK_W = 64 * DINO_SCALE;
 
   // ========== 恐龙 ==========
   const dino = {
@@ -216,7 +216,7 @@
     }
   }
 
-  // 恐龙 (像素风格 - 仿 Chrome T-Rex)
+  // 三角龙 (像素风格)
   function drawDino() {
     const d = dino;
     ctx.save();
@@ -225,38 +225,94 @@
     ctx.fillStyle = '#535353';
 
     if (d.ducking) {
-      // 趴下形态
-      ctx.fillRect(4, 4, 40, 12);
-      ctx.fillRect(34, 0, 18, 12);
-      ctx.fillRect(38, -2, 10, 4);
+      // 趴下/冲刺形态 (32x60 base)
+      // 尾巴
+      ctx.fillRect(0, 10, 6, 6);
+      // 身体
+      ctx.fillRect(4, 6, 40, 14);
+      // 后腿
+      ctx.fillRect(6, 20, 8, 6);
+      ctx.fillRect(28, 20, 8, 6);
+      // 前腿
+      const legOff = d.legFrame % 2 === 0 ? 0 : 2;
+      ctx.fillRect(10, 26, 8, 4 + legOff);
+      ctx.fillRect(30, 26, 8, 4 - legOff);
+      // 颈
+      ctx.fillRect(34, 0, 14, 12);
+      // 头盾（压低）
+      ctx.fillRect(40, -4, 18, 8);
+      ctx.fillRect(42, -6, 12, 4);
+      // 头
+      ctx.fillRect(50, 0, 10, 8);
+      // 角（前伸）
+      ctx.fillRect(56, -4, 5, 2);
+      ctx.fillRect(56, 0, 4, 2);
+      ctx.fillRect(58, 4, 4, 2);
+      // 嘴
+      ctx.fillRect(56, 4, 4, 3);
+      // 眼
       ctx.fillStyle = '#fff';
-      ctx.fillRect(42, 2, 4, 4);
+      ctx.fillRect(52, 1, 4, 3);
       ctx.fillStyle = '#535353';
-      ctx.fillRect(43, 4, 2, 2);
-      ctx.fillRect(48, 6, 4, 2);
-      ctx.fillRect(0, 6, 8, 4);
-      ctx.fillRect(-4, 8, 4, 2);
-      const legOff = d.legFrame % 2 === 0 ? 0 : 3;
-      ctx.fillRect(8, 16, 6, 6 + legOff);
-      ctx.fillRect(24, 16, 6, 6 - legOff);
+      ctx.fillRect(53, 2, 2, 1);
     } else {
-      // 站立/跑动形态
-      ctx.fillRect(8, 8, 28, 24);
-      ctx.fillRect(0, 12, 12, 10);
-      ctx.fillRect(-4, 14, 6, 6);
-      ctx.fillRect(30, 0, 14, 16);
-      ctx.fillRect(32, -4, 8, 4);
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(36, 2, 6, 6);
+      // 站立/跑动形态 (50x56 base)
+      // 短粗尾巴
+      ctx.fillRect(0, 18, 8, 8);
+      ctx.fillRect(-3, 20, 4, 4);
+
+      // 身体（敦实）
+      ctx.fillRect(6, 10, 24, 24);
+
+      // 肚皮（浅色）
+      ctx.fillStyle = '#6b6b6b';
+      ctx.fillRect(8, 22, 20, 12);
       ctx.fillStyle = '#535353';
-      ctx.fillRect(38, 4, 3, 3);
-      ctx.fillRect(40, 12, 6, 3);
-      ctx.fillRect(14, -4, 3, 6);
-      const legOff = d.legFrame % 2 === 0 ? 0 : 4;
-      ctx.fillRect(12, 32, 8, 8 + legOff);
-      ctx.fillRect(24, 32, 8, 8 - legOff);
-      ctx.fillRect(10, 38 + legOff, 12, 4);
-      ctx.fillRect(22, 38 - legOff, 12, 4);
+
+      // 颈部
+      ctx.fillRect(22, 2, 14, 20);
+
+      // 头盾（标志性大骨板，向后上方延伸）
+      ctx.fillRect(26, -12, 20, 14);
+      ctx.fillRect(28, -16, 16, 6);
+      ctx.fillRect(24, -10, 4, 20);
+      ctx.fillRect(46, -10, 4, 8);
+
+      // 头部主体
+      ctx.fillRect(36, 2, 14, 14);
+
+      // 喙（鹦鹉嘴）
+      ctx.fillRect(46, 8, 6, 4);
+      ctx.fillRect(48, 6, 4, 3);
+
+      // 眉角（两根长角，向前上方）
+      ctx.fillRect(40, -8, 3, 5);
+      ctx.fillRect(42, -10, 2, 4);
+      ctx.fillRect(44, -6, 3, 3);
+      ctx.fillRect(46, -4, 2, 2);
+
+      // 鼻角（短角，鼻子上方）
+      ctx.fillRect(46, 0, 2, 4);
+
+      // 眼睛（白色眼底）
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(38, 4, 5, 5);
+      ctx.fillStyle = '#535353';
+      ctx.fillRect(40, 6, 2, 2);
+
+      // 嘴线
+      ctx.fillRect(44, 12, 8, 1);
+
+      // 前腿
+      const legOff = d.legFrame % 2 === 0 ? 0 : 5;
+      ctx.fillRect(10, 34, 10, 10 + legOff);
+
+      // 后腿
+      ctx.fillRect(22, 34, 10, 10 - legOff);
+
+      // 脚掌
+      ctx.fillRect(8, 42 + legOff, 14, 5);
+      ctx.fillRect(20, 42 - legOff, 14, 5);
     }
     ctx.restore();
   }
@@ -518,10 +574,10 @@
       }
 
       // 生成障碍物
-      const minGap = Math.max(40, 110 - speed * 4); // 随速度减小间距
+      const minGap = Math.max(60, 160 - speed * 5); // 障碍间距
       const rand = Math.random();
       if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < W - minGap) {
-        if (rand < 0.02 + speed * 0.003) {
+        if (rand < 0.01 + speed * 0.0015) {
           spawnObstacle();
         }
       }
