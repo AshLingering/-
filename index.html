@@ -108,18 +108,7 @@
   let speed = 3;               // 当前滚动速度
   let frameCount = 0;
 
-  // ========== 恐龙 ==========
-  const dino = {
-    x: DINO_X,
-    y: GROUND_Y - DINO_NORMAL_H,
-    w: 44,
-    h: 46,
-    vy: 0,
-    grounded: true,
-    ducking: false,
-    legFrame: 0,
-  };
-
+  // ========== 恐龙尺寸常量 ==========
   const GRAVITY = 0.5;
   const JUMP_FORCE = -15;
   const DINO_SCALE = 1.5;
@@ -127,6 +116,16 @@
   const DINO_DUCK_H = 28 * DINO_SCALE;
   const DINO_NORMAL_W = 44 * DINO_SCALE;
   const DINO_DUCK_W = 54 * DINO_SCALE;
+
+  // ========== 恐龙 ==========
+  const dino = {
+    x: DINO_X,
+    y: GROUND_Y - DINO_NORMAL_H,
+    vy: 0,
+    grounded: true,
+    ducking: false,
+    legFrame: 0,
+  };
 
   // ========== 障碍物 ==========
   let obstacles = [];
