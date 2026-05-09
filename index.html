@@ -111,7 +111,7 @@
   // ========== 恐龙 ==========
   const dino = {
     x: DINO_X,
-    y: GROUND_Y - 46,
+    y: GROUND_Y - DINO_NORMAL_H,
     w: 44,
     h: 46,
     vy: 0,
@@ -120,12 +120,13 @@
     legFrame: 0,
   };
 
-  const GRAVITY = 0.75;
-  const JUMP_FORCE = -12;
-  const DINO_NORMAL_H = 46;
-  const DINO_DUCK_H = 28;
-  const DINO_NORMAL_W = 44;
-  const DINO_DUCK_W = 54;
+  const GRAVITY = 0.5;
+  const JUMP_FORCE = -15;
+  const DINO_SCALE = 1.5;
+  const DINO_NORMAL_H = 46 * DINO_SCALE;
+  const DINO_DUCK_H = 28 * DINO_SCALE;
+  const DINO_NORMAL_W = 44 * DINO_SCALE;
+  const DINO_DUCK_W = 54 * DINO_SCALE;
 
   // ========== 障碍物 ==========
   let obstacles = [];
@@ -219,63 +220,46 @@
   // 恐龙 (像素风格 - 仿 Chrome T-Rex)
   function drawDino() {
     const d = dino;
-    const x = d.x;
-    const y = d.y;
-    const h = d.ducking ? DINO_DUCK_H : DINO_NORMAL_H;
-    const w = d.ducking ? DINO_DUCK_W : DINO_NORMAL_W;
-
+    ctx.save();
+    ctx.translate(d.x, d.y);
+    ctx.scale(DINO_SCALE, DINO_SCALE);
     ctx.fillStyle = '#535353';
 
     if (d.ducking) {
       // 趴下形态
-      // 身体
-      ctx.fillRect(x + 4, y + 4, 40, 12);
-      // 头
-      ctx.fillRect(x + 34, y, 18, 12);
-      ctx.fillRect(x + 38, y - 2, 10, 4);
-      // 眼睛
+      ctx.fillRect(4, 4, 40, 12);
+      ctx.fillRect(34, 0, 18, 12);
+      ctx.fillRect(38, -2, 10, 4);
       ctx.fillStyle = '#fff';
-      ctx.fillRect(x + 42, y + 2, 4, 4);
+      ctx.fillRect(42, 2, 4, 4);
       ctx.fillStyle = '#535353';
-      ctx.fillRect(x + 43, y + 4, 2, 2);
-      // 嘴
-      ctx.fillRect(x + 48, y + 6, 4, 2);
-      // 尾巴
-      ctx.fillRect(x, y + 6, 8, 4);
-      ctx.fillRect(x - 4, y + 8, 4, 2);
-      // 腿
+      ctx.fillRect(43, 4, 2, 2);
+      ctx.fillRect(48, 6, 4, 2);
+      ctx.fillRect(0, 6, 8, 4);
+      ctx.fillRect(-4, 8, 4, 2);
       const legOff = d.legFrame % 2 === 0 ? 0 : 3;
-      ctx.fillRect(x + 8, y + 16, 6, 6 + legOff);
-      ctx.fillRect(x + 24, y + 16, 6, 6 - legOff);
+      ctx.fillRect(8, 16, 6, 6 + legOff);
+      ctx.fillRect(24, 16, 6, 6 - legOff);
     } else {
       // 站立/跑动形态
-      // 身体
-      ctx.fillRect(x + 8, y + 8, 28, 24);
-      // 尾部
-      ctx.fillRect(x, y + 12, 12, 10);
-      ctx.fillRect(x - 4, y + 14, 6, 6);
-      // 头部
-      ctx.fillRect(x + 30, y, 14, 16);
-      // 头顶
-      ctx.fillRect(x + 32, y - 4, 8, 4);
-      // 眼睛 (白色眼白)
+      ctx.fillRect(8, 8, 28, 24);
+      ctx.fillRect(0, 12, 12, 10);
+      ctx.fillRect(-4, 14, 6, 6);
+      ctx.fillRect(30, 0, 14, 16);
+      ctx.fillRect(32, -4, 8, 4);
       ctx.fillStyle = '#fff';
-      ctx.fillRect(x + 36, y + 2, 6, 6);
-      // 瞳孔
+      ctx.fillRect(36, 2, 6, 6);
       ctx.fillStyle = '#535353';
-      ctx.fillRect(x + 38, y + 4, 3, 3);
-      // 嘴
-      ctx.fillRect(x + 40, y + 12, 6, 3);
-      // 手臂 (小短手)
-      ctx.fillRect(x + 14, y - 4, 3, 6);
-      // 腿 (交替动画)
+      ctx.fillRect(38, 4, 3, 3);
+      ctx.fillRect(40, 12, 6, 3);
+      ctx.fillRect(14, -4, 3, 6);
       const legOff = d.legFrame % 2 === 0 ? 0 : 4;
-      ctx.fillRect(x + 12, y + 32, 8, 8 + legOff);
-      ctx.fillRect(x + 24, y + 32, 8, 8 - legOff);
-      // 脚
-      ctx.fillRect(x + 10, y + 38 + legOff, 12, 4);
-      ctx.fillRect(x + 22, y + 38 - legOff, 12, 4);
+      ctx.fillRect(12, 32, 8, 8 + legOff);
+      ctx.fillRect(24, 32, 8, 8 - legOff);
+      ctx.fillRect(10, 38 + legOff, 12, 4);
+      ctx.fillRect(22, 38 - legOff, 12, 4);
     }
+    ctx.restore();
   }
 
   // 仙人掌 (像素风格)
